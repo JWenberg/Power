@@ -1,0 +1,26 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{6883DF46-4294-4DB9-8D7E-499E2F3CD303}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "StarterProject",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "SpatialGDK",
+			"Enabled": true
+		},
+		{
+			"Name": "SpatialGDKEditorToolbar",
+			"Enabled": true
+		}
+	]
+}

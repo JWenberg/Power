@@ -49,11 +49,24 @@ SourceArt/**/*.png
 SourceArt/**/*.tga
 
 # Binary Files
-Binaries/*
+**/Binaries/*
 Plugins/*/Binaries/*
 
 # Builds
-Build/*
+**/Build/*
+
+# SpacialOS Additions
+**/DerivedDataCache/
+**/Intermediate/
+**/Saved/
+logs
+build/
+
+# SpatialGDK symlinked files
+Game/Plugins/UnrealGDK/
+spatial/schema
+spatial/snapshots
+Game/Content/Spatial/SchemaDatabase.uasset
 
 # Whitelist PakBlacklist-<BuildConfiguration>.txt files
 !Build/*/
