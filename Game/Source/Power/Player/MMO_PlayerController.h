@@ -14,6 +14,7 @@ class POWER_API AMMO_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-	
+public:		
+	AMMO_PlayerController();
 	
 };
