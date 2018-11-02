@@ -85,3 +85,6 @@ Game/Plugins/UnrealGDK/
 spatial/schema
 spatial/snapshots
 Game/Content/Spatial/SchemaDatabase.uasset
+
+# Power specific stuff
+Game/Content/StarterContent/*

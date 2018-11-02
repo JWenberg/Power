@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "EntityRegistry.h"
 #include "GameFramework/Character.h"
+#include "Power/Framework/Entity/PowerEntity.h"
 #include "MMO_Player.generated.h"
 
 UCLASS(config = Game, SpatialType)
-class POWER_API AMMO_Player : public ACharacter
+class POWER_API AMMO_Player : public APowerEntity
 {
 	GENERATED_BODY()
 
@@ -68,4 +69,7 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+//Power specific stuff
+public:
+    void Interact();
 };

@@ -64,8 +64,8 @@ void AMMO_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("RotateRight", this, &AMMO_Player::RotateRight);
 	PlayerInputComponent->BindAxis("RotateLeft", this, &AMMO_Player::RotateLeft);
 
+    PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMMO_Player::Interact);
 }
-
 
 /*
 void AMMO_Player::RotateRight(float Rate)
@@ -182,3 +182,15 @@ void AMMO_Player::ServerTurnPlayer_Implementation(FRotator NewRot)
 {
 	UpdatePlayerRot(NewRot);
 }
+
+void AMMO_Player::Interact()
+{
+    // Note:
+    // Interact is, for now, used as a test method for pretty much anything we wanna try out. 
+    // In this case, pressing F will deal damage to the character pressing it. 
+    // Allows checking that health is replicated to everyone
+    UE_LOG(LogTemp, Warning, TEXT("Health should decrease"))
+    
+    this->DealDamage(10);
+}
+
