@@ -2,6 +2,7 @@
 
 #include "PowerEntity.h"
 #include "UnrealNetwork.h"
+#include "PowerEntityAttributeSet.h"
 #include "Classes/Components/DecalComponent.h"
 
 
@@ -19,6 +20,10 @@ APowerEntity::APowerEntity()
     if (DecalMaterial.Succeeded()) {
         this->TargetCircle->SetMaterial(0, DecalMaterial.Object);
     }
+
+    //Ability system
+    this->AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
+    this->AttributeSet = CreateDefaultSubobject<UPowerEntityAttributeSet>(TEXT("PowerEntityAttributeSet"));
 }
 
 // Called when the game starts or when spawned
@@ -70,4 +75,17 @@ void APowerEntity::ServerDealDamage_Implementation(int Amount)
 bool APowerEntity::ServerDealDamage_Validate(int Amount)
 {
     return true;
+}
+
+
+
+void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
+{
+    if (AbilitySystem) {
+        if (HasAuthority() && Ability) {
+            AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability, 1, 0));
+        }
+
+        AbilitySystem->InitAbilityActorInfo(this, this);
+    }
 }

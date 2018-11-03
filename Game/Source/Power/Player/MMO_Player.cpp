@@ -65,6 +65,8 @@ void AMMO_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("RotateLeft", this, &AMMO_Player::RotateLeft);
 
     PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMMO_Player::Interact);
+
+    //AbilitySystem->BindAbilityActivationToInputComponent(PlayerInputComponent, FGameplayAbiliyInputBinds("ConfirmInput", "CancelInput", "AbilityInput"));
 }
 
 /*
@@ -193,4 +195,3 @@ void AMMO_Player::Interact()
     
     this->DealDamage(10);
 }
-

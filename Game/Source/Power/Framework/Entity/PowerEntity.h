@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
+#include "Abilities/GameplayAbility.h"
 #include "PowerEntity.generated.h"
 
-UCLASS()
-class POWER_API APowerEntity : public ACharacter
+UCLASS(config = Game)
+class POWER_API APowerEntity : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -30,6 +33,19 @@ public:
 	
 // PowerEntity framework
 public:
+
+
+/*     Gameplay Ability System      */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities, meta = (AllowPrivateAccess = "true"))
+    class UAbilitySystemComponent* AbilitySystem;
+
+    UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystem; };
+    
+    UFUNCTION(BlueprintCallable, Category = "Abilities")
+    void GiveAbility(TSubclassOf<UGameplayAbility> Ability);
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    class UPowerEntityAttributeSet* AttributeSet;
 
     /* Health related things */
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)

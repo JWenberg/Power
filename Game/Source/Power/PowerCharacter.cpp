@@ -71,15 +71,6 @@ void APowerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInp
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &APowerCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &APowerCharacter::TouchStopped);
-
-	// VR headset functionality
-	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APowerCharacter::OnResetVR);
-}
-
-
-void APowerCharacter::OnResetVR()
-{
-	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 
 void APowerCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
