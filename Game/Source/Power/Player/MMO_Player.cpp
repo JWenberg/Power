@@ -17,9 +17,13 @@ AMMO_Player::AMMO_Player()
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	// set our turn rates for input
+	// Set our turn rates for input
 	BaseTurnRate = 45.f;
-	BaseLookUpRate = 45.f;
+	BaseLookRate = 10.f;
+
+	// Max/Min Camera Pitch
+	CameraPitchMax = 80.f;
+	CameraPitchMin = -75.f;
 
 	// Configure character movement	
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
@@ -27,10 +31,13 @@ AMMO_Player::AMMO_Player()
 	GetCharacterMovement()->AirControl = 0.2f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	USpringArmComponent* CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 500.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->bUsePawnControlRotation = false; // Rotate the arm based on the controller
+	CameraBoom->bInheritPitch = false;
+	CameraBoom->bInheritRoll = false;
+	CameraBoom->bInheritYaw = false;
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -39,6 +46,10 @@ AMMO_Player::AMMO_Player()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	// Set Default Mouseclick Bools
+	LeftClicked = false;
+	RightClicked = false;
 
 }
 
@@ -50,7 +61,7 @@ void AMMO_Player::BeginPlay()
 // Called to bind functionality to input
 void AMMO_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	// Set up gameplay key bindings
+	// Set up movement key bindings
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
@@ -66,22 +77,19 @@ void AMMO_Player::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
     PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMMO_Player::Interact);
 
+	//Camera Control key Binds
+	PlayerInputComponent->BindAction("LeftClick", IE_Pressed, this, &AMMO_Player::LeftClick);
+	PlayerInputComponent->BindAction("LeftClick", IE_Released, this, &AMMO_Player::LeftClick);
+	PlayerInputComponent->BindAction("RightClick", IE_Pressed, this, &AMMO_Player::RightClick);
+	PlayerInputComponent->BindAction("RightClick", IE_Released, this, &AMMO_Player::RightClick);
+	
+	PlayerInputComponent->BindAxis("MousePitch", this, &AMMO_Player::ChangePitch);
+	PlayerInputComponent->BindAxis("MouseYaw", this, &AMMO_Player::ChangeYaw);
+
+	PlayerInputComponent->BindAxis("RMBHeld", this, &AMMO_Player::RotateToCamera);
+	
     //AbilitySystem->BindAbilityActivationToInputComponent(PlayerInputComponent, FGameplayAbiliyInputBinds("ConfirmInput", "CancelInput", "AbilityInput"));
 }
-
-/*
-void AMMO_Player::RotateRight(float Rate)
-{
-	// calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-}
-
-void AMMO_Player::LookUpAtRate(float Rate)
-{
-	// calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-}
-*/
 
 void AMMO_Player::MoveForward(float Value)
 {
@@ -94,6 +102,8 @@ void AMMO_Player::MoveForward(float Value)
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
+
+		AMMO_Player::ResetCamera();
 	}
 }
 
@@ -146,21 +156,28 @@ void AMMO_Player::StrafeLeft(float Value)
 
 void AMMO_Player::RotateRight(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f))
+	if (RightClicked == true) {
+		StrafeRight(Value);
+	} else if ((Controller != NULL) && (Value != 0.0f) && RightClicked == false)
 	{
 		AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 		FRotator Yaw = Controller->GetControlRotation();
+
 		AMMO_Player::UpdatePlayerRot(Yaw);
+		AMMO_Player::ResetCamera();
 	}
 }
 
 void AMMO_Player::RotateLeft(float Value)
 {
-	if ((Controller != NULL) && (Value != 0.0f))
-	{
+	if (RightClicked == true) {
+		StrafeLeft(Value);
+	} else if ((Controller != NULL) && (Value != 0.0f) && RightClicked == false) {
 		AddControllerYawInput(-1 * Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 		FRotator Yaw = Controller->GetControlRotation();
+
 		AMMO_Player::UpdatePlayerRot(Yaw);
+		AMMO_Player::ResetCamera();
 	}
 } 
 
@@ -194,4 +211,55 @@ void AMMO_Player::Interact()
     UE_LOG(LogTemp, Warning, TEXT("Health should decrease"))
     
     this->DealDamage(10);
+}
+
+void AMMO_Player::LeftClick() {
+	LeftClicked = !LeftClicked;
+}
+
+void AMMO_Player::RightClick() {
+	RightClicked = !RightClicked;
+}
+
+void AMMO_Player::ChangePitch(float Value) {
+	if (LeftClicked == true || RightClicked == true) {
+		
+		Value = Value * BaseLookRate;
+
+		//Calculate the new relative Pitch, and clamp it
+		FRotator Rotation(CameraBoom->GetComponentRotation());
+		float CameraPitch = FMath::Clamp(Rotation.Pitch + Value, CameraPitchMin, CameraPitchMax);
+		FRotator NewRotation(CameraPitch, Rotation.Yaw, 0);
+
+		//Set the new relative rotation
+		CameraBoom->SetWorldRotation(NewRotation);
+		
+	}
+}
+
+void AMMO_Player::ChangeYaw(float Value) {
+	if (LeftClicked == true || RightClicked == true) {
+		Value = Value * BaseLookRate;
+		
+		//Rotate the camera
+		CameraBoom->AddRelativeRotation(FRotator(0, Value, 0));
+	}
+}
+
+void AMMO_Player::RotateToCamera(float Value) {
+	if (Value > 0) {
+		
+		const FRotator CameraRot(CameraBoom->RelativeRotation);
+		Controller->SetControlRotation(FRotator(0, CameraRot.Yaw, 0));
+		
+		AMMO_Player::UpdatePlayerRot(FRotator(0, CameraRot.Yaw, 0));
+		
+	}
+}
+
+void AMMO_Player::ResetCamera() {
+	if (RightClicked == false && LeftClicked == false) {
+		FRotator Yaw = Controller->GetControlRotation();
+		CameraBoom->SetRelativeRotation(FRotator(CameraBoom->GetComponentRotation().Pitch, Yaw.Yaw, 0));
+	}
 }
