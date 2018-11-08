@@ -6,6 +6,8 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
+#include "AbilitySystemComponent.h"
+#include "UnrealNetwork.h"
 #include "PowerEntityAttributeSet.generated.h"
 
 //This macro should be used in .H files
@@ -19,6 +21,7 @@ FGameplayAttribute ClassName##::PropertyName##Attribute()																							
 	return FGameplayAttribute(Property);																												\
 }
 
+#define DECLARE_ATTRIBUTE_REPLICATION(PropertyName) UFUNCTION() void OnRep_##PropertyName() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, PropertyName) }
 /**
  * 
  */
@@ -27,9 +30,12 @@ class POWER_API UPowerEntityAttributeSet : public UAttributeSet
 {
     GENERATED_BODY()
 
-    UPROPERTY()
-    FGameplayAttributeData Health;
-	
+public:
+    UPowerEntityAttributeSet();
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRep_Health)
+        FGameplayAttributeData Health;
     DECLARE_ATTRIBUTE_FUNCTION(Health)
-	
+    UFUNCTION() void OnRep_Health() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, Health) }
+    //DECLARE_ATTRIBUTE_REPLICATION(Health)
 };

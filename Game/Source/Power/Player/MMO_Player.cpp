@@ -31,7 +31,7 @@ AMMO_Player::AMMO_Player()
 	GetCharacterMovement()->AirControl = 0.2f;
 
 	// Create a camera boom (pulls in towards the player if there is a collision)
-	USpringArmComponent* CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 500.0f; // The camera follows at this distance behind the character	
 	CameraBoom->bUsePawnControlRotation = false; // Rotate the arm based on the controller
@@ -222,6 +222,8 @@ void AMMO_Player::RightClick() {
 }
 
 void AMMO_Player::ChangePitch(float Value) {
+    if (CameraBoom == nullptr)
+        return;
 	if (LeftClicked == true || RightClicked == true) {
 		
 		Value = Value * BaseLookRate;
@@ -238,6 +240,8 @@ void AMMO_Player::ChangePitch(float Value) {
 }
 
 void AMMO_Player::ChangeYaw(float Value) {
+    if (CameraBoom == nullptr)
+        return;
 	if (LeftClicked == true || RightClicked == true) {
 		Value = Value * BaseLookRate;
 		
@@ -247,6 +251,8 @@ void AMMO_Player::ChangeYaw(float Value) {
 }
 
 void AMMO_Player::RotateToCamera(float Value) {
+    if (CameraBoom == nullptr)
+        return;
 	if (Value > 0) {
 		
 		const FRotator CameraRot(CameraBoom->RelativeRotation);
@@ -258,6 +264,8 @@ void AMMO_Player::RotateToCamera(float Value) {
 }
 
 void AMMO_Player::ResetCamera() {
+    if (CameraBoom == nullptr)
+        return;
 	if (RightClicked == false && LeftClicked == false) {
 		FRotator Yaw = Controller->GetControlRotation();
 		CameraBoom->SetRelativeRotation(FRotator(CameraBoom->GetComponentRotation().Pitch, Yaw.Yaw, 0));

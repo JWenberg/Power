@@ -15,6 +15,7 @@ APowerEntity::APowerEntity()
     this->TargetCircle = CreateDefaultSubobject<UDecalComponent>(TEXT("TargetCircle"));
     this->TargetCircle->DecalSize = FVector(64.f, 64.f, 64.f);
     this->TargetCircle->SetupAttachment(RootComponent);
+    this->TargetCircle->SetVisibility(false); 
 
     static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterial(TEXT("Material'/Game/Power/Materials/TargetDecal/M_DecalTarget.M_DecalTarget'"));
     if (DecalMaterial.Succeeded()) {
@@ -58,6 +59,7 @@ void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
     DOREPLIFETIME(APowerEntity, Health);
     DOREPLIFETIME(APowerEntity, Mana);
     DOREPLIFETIME(APowerEntity, Level);
+    DOREPLIFETIME(APowerEntity, TargetEntity);
 }
 
 void APowerEntity::DealDamage(int Amount)
@@ -83,7 +85,7 @@ void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 {
     if (AbilitySystem) {
         if (HasAuthority() && Ability) {
-            AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability, 1, 0));
+            AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability));
         }
 
         AbilitySystem->InitAbilityActorInfo(this, this);

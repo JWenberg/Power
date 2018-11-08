@@ -41,8 +41,9 @@ public:
 
     UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystem; };
     
+    /* Gives the ability to the Entity */
     UFUNCTION(BlueprintCallable, Category = "Abilities")
-    void GiveAbility(TSubclassOf<UGameplayAbility> Ability);
+    void GiveAbility(TSubclassOf<UGameplayAbility> AbilityToGive);
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     class UPowerEntityAttributeSet* AttributeSet;
@@ -67,9 +68,11 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Level;
 
-    APowerEntity* Target;
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Entity", Replicated)
+    APowerEntity* TargetEntity;
 
 // Rendering stuff
 public:
+    UPROPERTY(BlueprintReadWrite)
     UDecalComponent* TargetCircle;
 };
