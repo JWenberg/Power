@@ -12,87 +12,15 @@ UCLASS(config = Game, SpatialType)
 class POWER_API AMMO_Player : public APowerEntity
 {
 	GENERATED_BODY()
-
-	/** Camera boom positioning the camera behind the character */
-	UPROPERTY(VisibleAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
-
-	/** Follow camera */
-	UPROPERTY(VisibleAnywhere, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
 public:
 	AMMO_Player();
 
 	virtual void BeginPlay() override;
 
-	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-	float BaseTurnRate;
-
-	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
-		float BaseLookRate;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool LeftClicked;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	bool RightClicked;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float CameraPitchMax;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float CameraPitchMin;
-
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerTurnPlayer(FRotator NewRot);
-
-
-	virtual void ServerTurnPlayer_Implementation(FRotator NewRot);
-	virtual bool ServerTurnPlayer_Validate(FRotator NewRot);
-
-	//Mouse Controls
-	UFUNCTION(BlueprintCallable)
-	void LeftClick();
-	UFUNCTION(BlueprintCallable)
-	void RightClick();
-
-protected:
-	//Movement Controls
-	void MoveForward(float Value);
-	void MoveBackward(float Value);
-	
-	void RotateRight(float Value);
-	void RotateLeft(float Value);
-	
-	void StrafeRight(float Value);
-	void StrafeLeft(float Value);
-
-	//Camera Controls
-	void ChangePitch(float Value);
-	void ChangeYaw(float Value);
-
-	//RightClick Sets character Rotation to Camera rotation
-	void RotateToCamera(float Value);
-
-	//Reset Cameras Position Behind the Character
-	void ResetCamera();
-
-	void UpdatePlayerRot(FRotator NewRot);
-
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	// End of APawn interface
 
-public:
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-
-//Power specific stuff
 public:
     void Interact();
 };
