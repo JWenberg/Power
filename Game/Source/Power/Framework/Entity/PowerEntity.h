@@ -73,6 +73,6 @@ public:
 
 // Rendering stuff
 public:
-    UPROPERTY(BlueprintReadWrite)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     UDecalComponent* TargetCircle;
 };
