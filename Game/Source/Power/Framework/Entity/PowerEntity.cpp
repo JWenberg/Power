@@ -25,13 +25,17 @@ APowerEntity::APowerEntity()
     //Ability system
     this->AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
     this->AttributeSet = CreateDefaultSubobject<UPowerEntityAttributeSet>(TEXT("PowerEntityAttributeSet"));
+
+	//Default Name
+	this->Name = "DefaultName";
 }
 
 // Called when the game starts or when spawned
 void APowerEntity::BeginPlay()
 {
 	Super::BeginPlay();
-    this->Health = 100;
+	this->Health = 100;
+	this->MaxHealth = 100;
     this->Mana = 1000;
     this->Level = 0;
     this->TargetCircle->SetRelativeLocation(FVector(0.f, 0.f, -110.f));
@@ -57,9 +61,11 @@ void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     // Replicate to everyone
     DOREPLIFETIME(APowerEntity, Health);
+	DOREPLIFETIME(APowerEntity, MaxHealth);
     DOREPLIFETIME(APowerEntity, Mana);
     DOREPLIFETIME(APowerEntity, Level);
     DOREPLIFETIME(APowerEntity, TargetEntity);
+	DOREPLIFETIME(APowerEntity, Name);
 }
 
 void APowerEntity::DealDamage(int Amount)

@@ -49,8 +49,11 @@ public:
     class UPowerEntityAttributeSet* AttributeSet;
 
     /* Health related things */
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+	int MaxHealth;
 
     UFUNCTION(BlueprintCallable)
     void DealDamage(int Amount);
@@ -62,17 +65,20 @@ public:
     virtual bool ServerDealDamage_Validate(int Amount);
 
     /* Mana related things */
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Mana; 
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+	FString Name;
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Entity", Replicated)
     APowerEntity* TargetEntity;
 
 // Rendering stuff
 public:
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UDecalComponent* TargetCircle;
 };
