@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
 #include "Abilities/GameplayAbility.h"
+#include "UI/Nameplates/NameplateController.h"
 #include "PowerEntity.generated.h"
 
 UCLASS(config = Game)
@@ -58,6 +59,9 @@ public:
     UFUNCTION(BlueprintCallable)
     void DealDamage(int Amount);
 
+	UFUNCTION(BlueprintCallable)
+	void TestNP();
+
     UFUNCTION(Server, Reliable, WithValidation)
     void ServerDealDamage(int Amount);
 
@@ -77,8 +81,12 @@ public:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Entity", Replicated)
     APowerEntity* TargetEntity;
 
-// Rendering stuff
-public:
+	// Rendering stuff
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UDecalComponent* TargetCircle;
+
+	//Nameplate stuff
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UNameplateController* NameplateController;
+
 };
