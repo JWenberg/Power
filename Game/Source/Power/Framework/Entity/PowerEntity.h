@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
 #include "Abilities/GameplayAbility.h"
+#include "UI/Nameplates/NameplateController.h"
 #include "PowerEntity.generated.h"
 
 UCLASS(config = Game)
@@ -55,6 +56,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
 	int MaxHealth;
 
+
+	UFUNCTION(BlueprintCallable)
+	void TestNP();
+
     /* Mana related things */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Mana; 
@@ -88,4 +93,9 @@ public:
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UDecalComponent* TargetCircle;
+
+	//Nameplate stuff
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UNameplateController* NameplateController;
+
 };

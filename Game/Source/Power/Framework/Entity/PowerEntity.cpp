@@ -27,8 +27,19 @@ APowerEntity::APowerEntity()
     this->AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
     this->AttributeSet = CreateDefaultSubobject<UPowerEntityAttributeSet>(TEXT("PowerEntityAttributeSet"));
 
-	//Default Name
+	//Default Attributes
+	this->Health = 100;
+	this->MaxHealth = 100;
+	this->Mana = 1000;
+	this->Level = 0;
 	this->Name = "DefaultName";
+
+	//Nameplate
+	this->NameplateController = CreateDefaultSubobject<UNameplateController>(TEXT("Nameplate"));
+	this->NameplateController->SetupAttachment(RootComponent);
+	this->NameplateController->SetRelativeScale3D(FVector(0.3, 0.3, 0.3));
+	this->NameplateController->SetRelativeLocation(FVector(0, 0, 130));
+	this->NameplateController->bEditableWhenInherited = true;
 }
 
 // Called when the game starts or when spawned
@@ -78,6 +89,11 @@ void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 
         AbilitySystem->InitAbilityActorInfo(this, this);
     }
+}
+void APowerEntity::TestNP()
+{
+	FString testname = "Test";
+	this->NameplateController->UpdateNameText(testname);
 }
 
 void APowerEntity::ChangeTarget(APowerEntity* NewTarget)
