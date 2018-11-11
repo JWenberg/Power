@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ 
 
 #pragma once
 
@@ -55,15 +55,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
 	int MaxHealth;
 
-    UFUNCTION(BlueprintCallable)
-    void DealDamage(int Amount);
-
-    UFUNCTION(Server, Reliable, WithValidation)
-    void ServerDealDamage(int Amount);
-
-    virtual void ServerDealDamage_Implementation(int Amount);
-    virtual bool ServerDealDamage_Validate(int Amount);
-
     /* Mana related things */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Mana; 
@@ -74,8 +65,24 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
 	FString Name;
 
-    UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Entity", Replicated)
+/* Targeting */
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Entity", Replicated)
     APowerEntity* TargetEntity;
+
+    UFUNCTION(BlueprintCallable)
+    void ChangeTarget(APowerEntity* NewTarget);
+
+    UFUNCTION(Server, Reliable, WithValidation)
+    void ServerChangeTarget(APowerEntity* NewTarget);
+
+    virtual void ServerChangeTarget_Implementation(APowerEntity* NewTarget);
+    virtual bool ServerChangeTarget_Validate(APowerEntity* NewTarget);
+
+/* Casting abilities */
+
+    UFUNCTION(BlueprintCallable)
+    void CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast);
 
 // Rendering stuff
 public:

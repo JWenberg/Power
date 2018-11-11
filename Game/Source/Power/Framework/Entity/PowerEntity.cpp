@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ 
 
 #include "PowerEntity.h"
 #include "UnrealNetwork.h"
@@ -15,12 +15,13 @@ APowerEntity::APowerEntity()
     this->TargetCircle = CreateDefaultSubobject<UDecalComponent>(TEXT("TargetCircle"));
     this->TargetCircle->DecalSize = FVector(64.f, 64.f, 64.f);
     this->TargetCircle->SetupAttachment(RootComponent);
-    this->TargetCircle->SetVisibility(false); 
 
     static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterial(TEXT("Material'/Game/Power/Materials/TargetDecal/M_DecalTarget.M_DecalTarget'"));
     if (DecalMaterial.Succeeded()) {
         this->TargetCircle->SetMaterial(0, DecalMaterial.Object);
     }
+
+    this->TargetCircle->SetRelativeRotation(FQuat(180.f, 90.f, 180.f, 0.0f));
 
     //Ability system
     this->AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
@@ -37,9 +38,9 @@ void APowerEntity::BeginPlay()
 	this->Health = 100;
 	this->MaxHealth = 100;
     this->Mana = 1000;
-    this->Level = 0;
+    this->Level = 1;
     this->TargetCircle->SetRelativeLocation(FVector(0.f, 0.f, -110.f));
-    this->TargetCircle->SetRelativeRotation(FQuat(180.f, 90.f, 180.f, 0.0f));
+    this->TargetCircle->SetVisibility(false);
 }
 
 // Called every frame
@@ -68,25 +69,6 @@ void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 	DOREPLIFETIME(APowerEntity, Name);
 }
 
-void APowerEntity::DealDamage(int Amount)
-{
-    if (Role < ROLE_Authority) {
-        ServerDealDamage(Amount);
-    }
-}
-
-void APowerEntity::ServerDealDamage_Implementation(int Amount)
-{
-    this->Health -= Amount;
-}
-
-bool APowerEntity::ServerDealDamage_Validate(int Amount)
-{
-    return true;
-}
-
-
-
 void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 {
     if (AbilitySystem) {
@@ -96,4 +78,39 @@ void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 
         AbilitySystem->InitAbilityActorInfo(this, this);
     }
+}
+
+void APowerEntity::ChangeTarget(APowerEntity* NewTarget)
+{
+    if (Role < ROLE_Authority) {
+        ServerChangeTarget(NewTarget);
+    }
+
+    this->TargetEntity = NewTarget;
+}
+
+void APowerEntity::ServerChangeTarget_Implementation(APowerEntity* NewTarget)
+{
+    ChangeTarget(NewTarget);
+}
+
+bool APowerEntity::ServerChangeTarget_Validate(APowerEntity* NewTarget)
+{
+    return true;
+}
+
+
+void APowerEntity::CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast) {
+    //if (Role < ROLE_Authority) {
+        //ServerCastAbilityOnTarget();
+    //}
+        
+    //AbilitySystem->TryActivateAbilityByClass(AbilityToCast);
+
+    //TODO : 
+    // Server check
+    // Get target
+    // Build target data struct
+    // TryActivateAbility
+    // Send Gameplay tag
 }
