@@ -20,11 +20,9 @@ void UNameplateController::Initialize(FString Name, int CurrentLevel, int Curren
 	UpdateLevelText(CurrentLevel);
 	UpdateHealthBar(CurrentHealth, MaxHealth);
 }
+*/
 
-void UNameplateController::UpdateNameText(FString Name) {
-	NameplateBlueprint->UpdateName(Name);
-}
-
+/*
 void UNameplateController::UpdateLevelText(int NewLevel) {
 	NameplateBlueprint->UpdateLevel(NewLevel);
 }

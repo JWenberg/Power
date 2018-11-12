@@ -84,9 +84,8 @@ public:
 
     UFUNCTION(BlueprintCallable)
     void CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast);
-
-// Rendering stuff
 public:
+	// Rendering stuff
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UDecalComponent* TargetCircle;
 
