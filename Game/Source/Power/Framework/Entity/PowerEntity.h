@@ -56,18 +56,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
 	int MaxHealth;
 
-
-<<<<<<< HEAD
-    UFUNCTION(Server, Reliable, WithValidation)
-    void ServerDealDamage(int Amount);
-
-    virtual void ServerDealDamage_Implementation(int Amount);
-    virtual bool ServerDealDamage_Validate(int Amount);
-=======
-	UFUNCTION(BlueprintCallable)
-	void TestNP();
->>>>>>> c96e9027740a8328245ed12c51da4adcb673b9aa
-
     /* Mana related things */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Mana; 

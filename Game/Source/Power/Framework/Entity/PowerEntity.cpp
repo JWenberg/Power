@@ -80,9 +80,6 @@ void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 	DOREPLIFETIME(APowerEntity, Name);
 }
 
-<<<<<<< HEAD
-void APowerEntity::DealDamage(int Amount)
-=======
 void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 {
     if (AbilitySystem) {
@@ -93,14 +90,8 @@ void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
         AbilitySystem->InitAbilityActorInfo(this, this);
     }
 }
-void APowerEntity::TestNP()
-{
-	FString testname = "Test";
-	this->NameplateController->UpdateNameText(testname);
-}
 
 void APowerEntity::ChangeTarget(APowerEntity* NewTarget)
->>>>>>> c96e9027740a8328245ed12c51da4adcb673b9aa
 {
     if (Role < ROLE_Authority) {
         ServerChangeTarget(NewTarget);
