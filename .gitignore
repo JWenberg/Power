@@ -88,9 +88,3 @@ Game/Content/Spatial/SchemaDatabase.uasset
 
 # Power specific stuff
 Game/Content/StarterContent/*
-
-# CLion
-
-**/.idea
-**/cmake-build-debug
-**/cmake-build-release

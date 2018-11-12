@@ -1,4 +1,4 @@
- 
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MMO_Player.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -39,4 +39,6 @@ void AMMO_Player::Interact()
     // In this case, pressing F will deal damage to the character pressing it. 
     // Allows checking that health is replicated to everyone
     UE_LOG(LogTemp, Warning, TEXT("Health should decrease"))
+    
+    this->DealDamage(10);
 }
