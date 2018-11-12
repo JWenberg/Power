@@ -59,9 +59,6 @@ public:
     UFUNCTION(BlueprintCallable)
     void DealDamage(int Amount);
 
-	UFUNCTION(BlueprintCallable)
-	void TestNP();
-
     UFUNCTION(Server, Reliable, WithValidation)
     void ServerDealDamage(int Amount);
 

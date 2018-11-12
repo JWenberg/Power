@@ -75,12 +75,6 @@ void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 	DOREPLIFETIME(APowerEntity, Name);
 }
 
-void APowerEntity::TestNP()
-{
-	FString testname = "Test";
-	this->NameplateController->UpdateNameText(testname);
-}
-
 void APowerEntity::DealDamage(int Amount)
 {
     if (Role < ROLE_Authority) {

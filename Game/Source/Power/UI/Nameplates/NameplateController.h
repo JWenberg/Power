@@ -19,6 +19,7 @@ class POWER_API UNameplateController : public URotateNameplateToCamera
 public:
 	UNameplateController();
 	
+	/*
 	UFUNCTION(BlueprintCallable, Category = "From Cpp")
 	void Initialize(FString Name, int CurrentLevel, int CurrentHealth, int MaxHealth);
 
@@ -33,4 +34,5 @@ public:
 
 	UPROPERTY()
 	UNameplateWidget* NameplateBlueprint;
+	*/
 };
