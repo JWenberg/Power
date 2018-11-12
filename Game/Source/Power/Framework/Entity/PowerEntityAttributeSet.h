@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ 
 
 #pragma once
 
@@ -21,7 +21,6 @@ FGameplayAttribute ClassName##::PropertyName##Attribute()																							
 	return FGameplayAttribute(Property);																												\
 }
 
-#define DECLARE_ATTRIBUTE_REPLICATION(PropertyName) UFUNCTION() void OnRep_##PropertyName() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, PropertyName) }
 /**
  * 
  */
@@ -34,8 +33,25 @@ public:
     UPowerEntityAttributeSet();
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRep_Health)
-        FGameplayAttributeData Health;
+    FGameplayAttributeData Health;
     DECLARE_ATTRIBUTE_FUNCTION(Health)
     UFUNCTION() void OnRep_Health() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, Health) }
-    //DECLARE_ATTRIBUTE_REPLICATION(Health)
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRep_MaxHealth)
+    FGameplayAttributeData MaxHealth;
+    DECLARE_ATTRIBUTE_FUNCTION(MaxHealth)
+    UFUNCTION() void OnRep_MaxHealth() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, MaxHealth) }
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRep_Mana)
+    FGameplayAttributeData Mana;
+    DECLARE_ATTRIBUTE_FUNCTION(Mana)
+    UFUNCTION() void OnRep_Mana() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, Mana) }
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, ReplicatedUsing = OnRep_MaxMana)
+    FGameplayAttributeData MaxMana;
+    DECLARE_ATTRIBUTE_FUNCTION(MaxMana)
+    UFUNCTION() void OnRep_MaxMana() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, MaxMana) }
+
+
+    void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
 };
