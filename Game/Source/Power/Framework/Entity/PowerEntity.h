@@ -60,6 +60,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Mana; 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+	int MaxMana;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Level;
 
@@ -93,4 +96,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UNameplateController* NameplateController;
 
+	//Update the player's hud
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHUD();
 };
