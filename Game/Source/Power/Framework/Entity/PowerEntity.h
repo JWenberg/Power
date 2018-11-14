@@ -69,6 +69,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
 	FString Name;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+	FString Guild;
+
 /* Targeting */
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Entity", Replicated)
@@ -93,8 +96,8 @@ public:
     UDecalComponent* TargetCircle;
 
 	//Nameplate stuff
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UNameplateController* NameplateController;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	//UNameplateController* NameplateController;
 
 	//Update the player's hud
 	UFUNCTION(BlueprintImplementableEvent)
