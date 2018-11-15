@@ -96,8 +96,8 @@ public:
     UDecalComponent* TargetCircle;
 
 	//Nameplate stuff
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	//UNameplateController* NameplateController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UNameplateController* NameplateController;
 
 	//Update the player's hud
 	UFUNCTION(BlueprintImplementableEvent)

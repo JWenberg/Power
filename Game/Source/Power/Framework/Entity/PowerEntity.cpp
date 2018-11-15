@@ -33,19 +33,17 @@ APowerEntity::APowerEntity()
 	this->Mana = 1000;
 	this->MaxMana = 1000;
 	this->Level = 0;
-	this->Name = "DefaultName";
-	this->Guild = "";
+	this->Name = "Jansen";
+	this->Guild = "IsAFaggot";
 
 	//Nameplate Component
-	//this->NameplateController = CreateDefaultSubobject<UNameplateController>(TEXT("Nameplate"));
-	/*static ConstructorHelpers::FObjectFinder<UNameplateController> NameplateReference(TEXT("Blueprint'/Game/Power/UI/NamePlates/BP_NameplateController.BP_NameplateController'"));
+	static ConstructorHelpers::FClassFinder<UNameplateController> NameplateReference(TEXT("/Game/Power/UI/NamePlates/BP_NameplateController"));
 	if (NameplateReference.Succeeded()) {
-		this->NameplateController = NameplateReference.Object;
-		this->NameplateController->SetRelativeScale3D(FVector(0.3, 0.3, 0.3));
-		this->NameplateController->SetRelativeLocation(FVector(0, 0, 130));
-		this->NameplateController->bEditableWhenInherited = true;
+		this->NameplateController = static_cast<UNameplateController*>(CreateDefaultSubobject(TEXT("NameplateController"), UNameplateController::StaticClass(), NameplateReference.Class.Get(), true, false, false));
+		this->NameplateController->SetupAttachment(RootComponent);
+		this->NameplateController->SetRelativeLocation(FVector(0, 0, 120));
+		this->NameplateController->UpdateNameplate();
 	}
-	*/
 }
 
 // Called when the game starts or when spawned

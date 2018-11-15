@@ -20,8 +20,8 @@ public:
 	UNameplateController();
 	
 
-	//UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "From Cpp")
-	//void Initialize(FString Name, int CurrentLevel, int CurrentHealth, int MaxHealth);
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateNameplate();
 	
 	//UFUNCTION(BlueprintImplementableEvent, Category = "From Cpp")
 	//void UpdateNameText();
