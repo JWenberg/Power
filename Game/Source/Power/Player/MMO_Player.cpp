@@ -12,7 +12,7 @@
 #include "SpatialNetDriver.h"
 
 // Sets default values
-AMMO_Player::AMMO_Player()
+AMMO_Player::AMMO_Player() : APowerEntity()
 {
 
 }

@@ -87,7 +87,15 @@ public:
 /* Casting abilities */
 
     UFUNCTION(BlueprintCallable)
-    void CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast);
+    void CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag);
+
+    UFUNCTION(Server, Reliable, WithValidation)
+    void ServerCastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag);
+
+    virtual void ServerCastAbilityOnTarget_Implementation(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag);
+    virtual bool ServerCastAbilityOnTarget_Validate(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag);
+
+
 
 // Rendering stuff
 public:

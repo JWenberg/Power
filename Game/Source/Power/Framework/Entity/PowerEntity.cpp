@@ -116,17 +116,30 @@ bool APowerEntity::ServerChangeTarget_Validate(APowerEntity* NewTarget)
 }
 
 
-void APowerEntity::CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast) {
-    //if (Role < ROLE_Authority) {
-        //ServerCastAbilityOnTarget();
-    //}
+void APowerEntity::CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag) {
+    if (TargetEntity == nullptr) {
+        return;
+    }
+    
+    if (Role < ROLE_Authority) {
+        ServerCastAbilityOnTarget(AbilityToCast, EventTag);
+    }
         
-    //AbilitySystem->TryActivateAbilityByClass(AbilityToCast);
+    AbilitySystem->TryActivateAbilityByClass(AbilityToCast);
+    FGameplayEventData Payload;
+    Payload.Target = TargetEntity;
 
-    //TODO : 
-    // Server check
-    // Get target
-    // Build target data struct
-    // TryActivateAbility
-    // Send Gameplay tag
+
+    //this->SendGameplayEventToActor(this, EventTag.GetByIndex(0), Payload);
+    AbilitySystem->HandleGameplayEvent(EventTag, &Payload);
+}
+
+void APowerEntity::ServerCastAbilityOnTarget_Implementation(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag)
+{
+    CastAbilityOnTarget(AbilityToCast, EventTag);
+}
+
+bool APowerEntity::ServerCastAbilityOnTarget_Validate(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag)
+{
+    return true;
 }
