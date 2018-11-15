@@ -12,20 +12,10 @@ UNameplateController::UNameplateController() {
 		this->SetWidgetClass(Nameplate.Class);
 	}
 	this->bEditableWhenInherited = true;
-	NameplateBlueprint = Cast<UNameplateWidget>(UNameplateController::GetUserWidgetObject());
-	
+	//NameplateBlueprint = Cast<UNameplateWidget>(UNameplateController::GetUserWidgetObject());
 }
 
-void UNameplateController::Initialize(FString Name, int CurrentLevel, int CurrentHealth, int MaxHealth) {
-	UpdateNameText(Name);
-	UpdateLevelText(CurrentLevel);
-	UpdateHealthBar(CurrentHealth, MaxHealth);
-}
-
-void UNameplateController::UpdateNameText(FString Name) {
-	NameplateBlueprint->UpdateName(Name);
-}
-
+/*
 void UNameplateController::UpdateLevelText(int NewLevel) {
 	NameplateBlueprint->UpdateLevel(NewLevel);
 }
@@ -33,3 +23,4 @@ void UNameplateController::UpdateLevelText(int NewLevel) {
 void UNameplateController::UpdateHealthBar(int CurrentHealth, int MaxHealth) {
 	NameplateBlueprint->UpdateHealthBar(CurrentHealth, MaxHealth);
 }
+*/

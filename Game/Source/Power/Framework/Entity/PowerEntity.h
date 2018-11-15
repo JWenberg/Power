@@ -56,19 +56,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
 	int MaxHealth;
 
-
-	UFUNCTION(BlueprintCallable)
-	void TestNP();
-
     /* Mana related things */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Mana; 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+	int MaxMana;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
 	FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
+	FString Guild;
 
 /* Targeting */
 
@@ -94,11 +96,8 @@ public:
 
     virtual void ServerCastAbilityOnTarget_Implementation(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag);
     virtual bool ServerCastAbilityOnTarget_Validate(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag);
-
-
-
-// Rendering stuff
 public:
+	// Rendering stuff
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UDecalComponent* TargetCircle;
 
@@ -106,4 +105,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UNameplateController* NameplateController;
 
+	//Update the player's hud
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHUD();
 };
