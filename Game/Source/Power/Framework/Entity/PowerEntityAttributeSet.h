@@ -53,5 +53,5 @@ public:
     UFUNCTION() void OnRep_MaxMana() { GAMEPLAYATTRIBUTE_REPNOTIFY(UPowerEntityAttributeSet, MaxMana) }
 
 
-    void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
+    virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
 };

@@ -50,11 +50,11 @@ public:
     class UPowerEntityAttributeSet* AttributeSet;
 
     /* Health related things */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
-    int Health;
+    UFUNCTION(BlueprintCallable)
+    int GetHealth();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
-	int MaxHealth;
+    UFUNCTION(BlueprintCallable)
+    int GetMaxHealth();
 
     /* Mana related things */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)

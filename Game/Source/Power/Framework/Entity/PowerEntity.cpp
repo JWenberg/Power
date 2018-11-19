@@ -28,8 +28,6 @@ APowerEntity::APowerEntity()
     this->AttributeSet = CreateDefaultSubobject<UPowerEntityAttributeSet>(TEXT("PowerEntityAttributeSet"));
 
 	//Default Attributes
-	this->Health = 100;
-	this->MaxHealth = 100;
 	this->Mana = 1000;
 	this->MaxMana = 1000;
 	this->Level = 0;
@@ -50,8 +48,6 @@ APowerEntity::APowerEntity()
 void APowerEntity::BeginPlay()
 {
 	Super::BeginPlay();
-	this->Health = 100;
-	this->MaxHealth = 100;
     this->Mana = 1000;
     this->Level = 1;
     this->TargetCircle->SetRelativeLocation(FVector(0.f, 0.f, -110.f));
@@ -77,8 +73,6 @@ void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
     // Replicate to everyone
-    DOREPLIFETIME(APowerEntity, Health);
-	DOREPLIFETIME(APowerEntity, MaxHealth);
     DOREPLIFETIME(APowerEntity, Mana);
     DOREPLIFETIME(APowerEntity, Level);
     DOREPLIFETIME(APowerEntity, TargetEntity);
@@ -94,6 +88,16 @@ void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 
         AbilitySystem->InitAbilityActorInfo(this, this);
     }
+}
+
+int APowerEntity::GetHealth()
+{
+    return AttributeSet->Health.GetCurrentValue();
+}
+
+int APowerEntity::GetMaxHealth()
+{
+    return AttributeSet->MaxHealth.GetCurrentValue();
 }
 
 void APowerEntity::ChangeTarget(APowerEntity* NewTarget)
@@ -128,9 +132,6 @@ void APowerEntity::CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCa
     AbilitySystem->TryActivateAbilityByClass(AbilityToCast);
     FGameplayEventData Payload;
     Payload.Target = TargetEntity;
-
-
-    //this->SendGameplayEventToActor(this, EventTag.GetByIndex(0), Payload);
     AbilitySystem->HandleGameplayEvent(EventTag, &Payload);
 }
 
