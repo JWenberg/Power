@@ -25,11 +25,19 @@ void UPowerEntityAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProper
 
 void UPowerEntityAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData & Data)
 {
-    Super::PostGameplayEffectExecute(Data);
+}
 
-    APowerEntity* Target = Cast<APowerEntity>(Data.Target.GetAvatarActor());
-    Target->GetName();
-    if (Target) {
-        Target->UpdateHUD();
-    }
+void UPowerEntityAttributeSet::UpdateAttributeDisplays() {
+	APowerEntity* Owner = Cast<APowerEntity>(this->GetOwningActor());
+	Owner->GetName();
+	if (Owner) {
+		//Update the entity's nameplate
+		Owner->NameplateController->UpdateNameplate();
+		//UE_LOG(LogTemp, Warning, TEXT("Nameplate Should Update"));
+
+		//If entity is a player with a hud, update it's hud as well
+		if (Owner->IsPlayerControlled()) {
+			Owner->UpdateHUD();
+		}
+	}
 }

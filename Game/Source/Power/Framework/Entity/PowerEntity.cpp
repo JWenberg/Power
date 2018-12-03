@@ -32,7 +32,7 @@ APowerEntity::APowerEntity()
 	this->MaxMana = 1000;
 	this->Level = 0;
 	this->Name = "Jansen";
-	this->Guild = "IsAFaggot";
+	this->Guild = "IsInAGuild";
 
 	//Nameplate Component
 	static ConstructorHelpers::FClassFinder<UNameplateController> NameplateReference(TEXT("/Game/Power/UI/NamePlates/BP_NameplateController"));
