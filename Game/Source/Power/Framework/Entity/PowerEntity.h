@@ -78,6 +78,9 @@ public:
     APowerEntity* TargetEntity;
 
     UFUNCTION(BlueprintCallable)
+    void SetTargetAndHandleCircle(APowerEntity* EntityToTarget);
+
+    UFUNCTION(BlueprintCallable)
     void ChangeTarget(APowerEntity* NewTarget);
 
     UFUNCTION(Server, Reliable, WithValidation)

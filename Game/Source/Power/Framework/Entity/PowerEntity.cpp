@@ -100,6 +100,19 @@ int APowerEntity::GetMaxHealth()
     return AttributeSet->MaxHealth.GetCurrentValue();
 }
 
+void APowerEntity::SetTargetAndHandleCircle(APowerEntity * EntityToTarget)
+{
+    if (this->TargetEntity) {
+        this->TargetEntity->TargetCircle->SetVisibility(false);
+    }
+
+    this->ChangeTarget(EntityToTarget);
+
+    if (EntityToTarget) {
+        EntityToTarget->TargetCircle->SetVisibility(true);
+    }
+}
+
 void APowerEntity::ChangeTarget(APowerEntity* NewTarget)
 {
     if (Role < ROLE_Authority) {
