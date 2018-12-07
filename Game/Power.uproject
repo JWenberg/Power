@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{6E58E0ED-4471-4C95-EED4-44B9C61C81CA}",
+	"EngineAssociation": "{6883DF46-4294-4DB9-8D7E-499E2F3CD303}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -26,6 +26,11 @@
 		{
 			"Name": "GameplayAbilities",
 			"Enabled": true
+		},
+		{
+			"Name": "Substance",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/2f6439c2f9584f49809d9b13b16c2ba4"
 		}
 	]
 }
