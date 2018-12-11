@@ -82,7 +82,6 @@ build/
 
 # SpatialGDK symlinked files
 Game/Plugins/UnrealGDK/
-Game/Plugins/Able/
 spatial/schema
 spatial/snapshots
 Game/Content/Spatial/SchemaDatabase.uasset

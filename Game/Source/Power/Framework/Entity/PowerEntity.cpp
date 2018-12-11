@@ -111,6 +111,7 @@ void APowerEntity::SetTargetAndHandleCircle(APowerEntity * EntityToTarget)
     if (EntityToTarget) {
         EntityToTarget->TargetCircle->SetVisibility(true);
     }
+	UpdateHUD();
 }
 
 void APowerEntity::ChangeTarget(APowerEntity* NewTarget)
