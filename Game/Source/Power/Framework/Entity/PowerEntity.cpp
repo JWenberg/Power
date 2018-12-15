@@ -3,6 +3,7 @@
 #include "PowerEntity.h"
 #include "UnrealNetwork.h"
 #include "PowerEntityAttributeSet.h"
+#include "PowerEntityStats.h"
 #include "Classes/Components/DecalComponent.h"
 
 
@@ -42,6 +43,9 @@ APowerEntity::APowerEntity()
 		this->NameplateController->SetRelativeLocation(FVector(0, 0, 120));
 		this->NameplateController->UpdateNameplate();
 	}
+
+    this->EntityStats = CreateDefaultSubobject<UPowerEntityStats>(TEXT("EntityStats"));
+    this->EntityStats->Owner = this;
 }
 
 // Called when the game starts or when spawned
@@ -92,12 +96,14 @@ void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 
 int APowerEntity::GetHealth()
 {
-    return AttributeSet->Health.GetCurrentValue();
+    return EntityStats->HealthStat()->GetCurrentValue();
+    //return AttributeSet->Health.GetCurrentValue();
 }
 
 int APowerEntity::GetMaxHealth()
 {
-    return AttributeSet->MaxHealth.GetCurrentValue();
+    return EntityStats->HealthStat()->GetMaxValue();
+    //return AttributeSet->MaxHealth.GetCurrentValue();
 }
 
 void APowerEntity::SetTargetAndHandleCircle(APowerEntity * EntityToTarget)

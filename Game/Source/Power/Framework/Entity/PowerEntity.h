@@ -49,6 +49,9 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     class UPowerEntityAttributeSet* AttributeSet;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    class UPowerEntityStats* EntityStats;
+
     /* Health related things */
     UFUNCTION(BlueprintCallable)
     int GetHealth();
