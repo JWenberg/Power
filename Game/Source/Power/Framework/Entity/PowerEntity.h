@@ -59,6 +59,9 @@ public:
     UFUNCTION(BlueprintCallable)
     int GetMaxHealth();
 
+	UFUNCTION(BlueprintCallable)
+	void ReduceHealth(float HealthToReduce);
+
     /* Mana related things */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)
     int Mana; 

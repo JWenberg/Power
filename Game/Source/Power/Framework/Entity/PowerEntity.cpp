@@ -96,14 +96,18 @@ void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
 
 int APowerEntity::GetHealth()
 {
-    return EntityStats->HealthStat()->GetCurrentValue();
-    //return AttributeSet->Health.GetCurrentValue();
+    //return EntityStats->HealthStat()->GetCurrentValue();
+	return AttributeSet->Health.GetCurrentValue();
+}
+
+void APowerEntity::ReduceHealth(float HealthToReduce) {
+	AttributeSet->Health.SetCurrentValue((float)GetHealth() - HealthToReduce);
 }
 
 int APowerEntity::GetMaxHealth()
 {
-    return EntityStats->HealthStat()->GetMaxValue();
-    //return AttributeSet->MaxHealth.GetCurrentValue();
+    //return EntityStats->HealthStat()->GetMaxValue();
+    return AttributeSet->MaxHealth.GetCurrentValue();
 }
 
 void APowerEntity::SetTargetAndHandleCircle(APowerEntity * EntityToTarget)
