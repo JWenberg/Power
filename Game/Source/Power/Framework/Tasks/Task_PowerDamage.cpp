@@ -91,7 +91,9 @@ void UTask_PowerDamage::OnTaskStart(const TWeakObjectPtr<const UAblAbilityContex
 					PrintVerbose(FString::Printf(TEXT("Applying %4.2f damage to %s."), DamageValues[i], *DamageTargets[i]->GetName()));
 				}
 #endif
-				DamageTargets[i]->TakeDamage(DamageValues[i], EmptyEvent, nullptr, DamageSource);
+				//DamageTargets[i]->TakeDamage(DamageValues[i], EmptyEvent, nullptr, DamageSource);
+                APowerEntity* EntityToDamage = Cast<APowerEntity>(DamageTargets[i]);
+                EntityToDamage->ReduceHealth(DamageValues[i]);
 			}
 		}
 	}
