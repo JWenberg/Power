@@ -10,7 +10,7 @@ DEFINE_ATTRIBUTE_FUNCTION(MaxHealth, UPowerEntityAttributeSet)
 DEFINE_ATTRIBUTE_FUNCTION(Mana, UPowerEntityAttributeSet)
 DEFINE_ATTRIBUTE_FUNCTION(MaxMana, UPowerEntityAttributeSet)
 
-UPowerEntityAttributeSet::UPowerEntityAttributeSet() : Health(1000.f), MaxHealth(1000.f)
+UPowerEntityAttributeSet::UPowerEntityAttributeSet() : Health(1000.f), MaxHealth(1000.f), Mana(1000.f), MaxMana(1000.f)
 {
 
 }

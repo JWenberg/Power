@@ -8,34 +8,19 @@
 
 
 // Sets default values
-APowerEntity::APowerEntity()
-{
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+APowerEntity::APowerEntity() {
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    this->TargetCircle = CreateDefaultSubobject<UDecalComponent>(TEXT("TargetCircle"));
-    this->TargetCircle->DecalSize = FVector(64.f, 64.f, 64.f);
-    this->TargetCircle->SetupAttachment(RootComponent);
+	//AttributeSet Initialization
+	this->AttributeSet = CreateDefaultSubobject<UPowerEntityAttributeSet>(TEXT("PowerEntityAttributeSet"));
 
-    static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterial(TEXT("Material'/Game/Power/Materials/TargetDecal/M_DecalTarget.M_DecalTarget'"));
-    if (DecalMaterial.Succeeded()) {
-        this->TargetCircle->SetMaterial(0, DecalMaterial.Object);
-    }
-
-    this->TargetCircle->SetRelativeRotation(FQuat(180.f, 90.f, 180.f, 0.0f));
-
-    //Ability system
-    this->AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
-    this->AttributeSet = CreateDefaultSubobject<UPowerEntityAttributeSet>(TEXT("PowerEntityAttributeSet"));
-
-	//Default Attributes
-	this->Mana = 1000;
-	this->MaxMana = 1000;
-	this->Level = 0;
+	//Default Values for non-AttributeSet Attributes
+	this->Level = 1;
 	this->Name = "Jansen";
 	this->Guild = "IsInAGuild";
 
-	//Nameplate Component
+	//Nameplate Component Initialization
 	static ConstructorHelpers::FClassFinder<UNameplateController> NameplateReference(TEXT("/Game/Power/UI/NamePlates/BP_NameplateController"));
 	if (NameplateReference.Succeeded()) {
 		this->NameplateController = static_cast<UNameplateController*>(CreateDefaultSubobject(TEXT("NameplateController"), UNameplateController::StaticClass(), NameplateReference.Class.Get(), true, false, false));
@@ -44,127 +29,107 @@ APowerEntity::APowerEntity()
 		this->NameplateController->UpdateNameplate();
 	}
 
-    this->EntityStats = CreateDefaultSubobject<UPowerEntityStats>(TEXT("EntityStats"));
-    this->EntityStats->Owner = this;
+	//TargetCircle Component Initialization
+	this->TargetCircle = CreateDefaultSubobject<UDecalComponent>(TEXT("TargetCircle"));
+	this->TargetCircle->DecalSize = FVector(64.f, 64.f, 64.f);
+	this->TargetCircle->SetupAttachment(RootComponent);
+	this->TargetCircle->SetRelativeRotation(FQuat(180.f, 90.f, 180.f, 0.0f));
+	this->TargetCircle->SetRelativeLocation(FVector(0.f, 0.f, -110.f));
+	this->TargetCircle->SetVisibility(false);
+	static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterial(TEXT("Material'/Game/Power/Materials/TargetDecal/M_DecalTarget.M_DecalTarget'"));
+	if (DecalMaterial.Succeeded()) {
+		this->TargetCircle->SetMaterial(0, DecalMaterial.Object);
+	}
+
 }
 
+//================================================================================
+// UE4 Stuff
+//================================================================================
+
 // Called when the game starts or when spawned
-void APowerEntity::BeginPlay()
-{
+void APowerEntity::BeginPlay() {
 	Super::BeginPlay();
-    this->Mana = 1000;
-    this->Level = 1;
-    this->TargetCircle->SetRelativeLocation(FVector(0.f, 0.f, -110.f));
-    this->TargetCircle->SetVisibility(false);
 	UpdateHUD();
 }
 
-// Called every frame
-void APowerEntity::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void APowerEntity::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
+//Replication for non-AttributeSet Attributes
 void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-    // Replicate to everyone
-    DOREPLIFETIME(APowerEntity, Mana);
-    DOREPLIFETIME(APowerEntity, Level);
-    DOREPLIFETIME(APowerEntity, TargetEntity);
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(APowerEntity, Name);
+	DOREPLIFETIME(APowerEntity, Level);
+	DOREPLIFETIME(APowerEntity, TargetEntity);
 }
 
-void APowerEntity::GiveAbility(TSubclassOf<UGameplayAbility> Ability)
-{
-    if (AbilitySystem) {
-        if (HasAuthority() && Ability) {
-            AbilitySystem->GiveAbility(FGameplayAbilitySpec(Ability));
-        }
+//================================================================================
+// Attribute Stuff
+//================================================================================
 
-        AbilitySystem->InitAbilityActorInfo(this, this);
-    }
-}
-
-int APowerEntity::GetHealth()
-{
-    //return EntityStats->HealthStat()->GetCurrentValue();
+int APowerEntity::GetHealth() {
 	return AttributeSet->Health.GetCurrentValue();
 }
 
+int APowerEntity::GetMaxHealth() {
+	return AttributeSet->MaxHealth.GetCurrentValue();
+}
+
+int APowerEntity::GetMana() {
+	return AttributeSet->Mana.GetCurrentValue();
+}
+
+int APowerEntity::GetMaxMana() {
+	return AttributeSet->MaxMana.GetCurrentValue();
+}
+
 void APowerEntity::ReduceHealth(float HealthToReduce) {
-	AttributeSet->Health.SetCurrentValue((float)GetHealth() - HealthToReduce);
+	float newHealthValue = (float)GetHealth() - HealthToReduce;
+	
+	//Make sure health value never goes below 0
+	if (newHealthValue <= 0) {
+		newHealthValue = 0;
+		//Todo: Die
+	} 
+	AttributeSet->Health.SetCurrentValue(newHealthValue);
 }
 
-int APowerEntity::GetMaxHealth()
-{
-    //return EntityStats->HealthStat()->GetMaxValue();
-    return AttributeSet->MaxHealth.GetCurrentValue();
-}
+//================================================================================
+// Targeting Stuff
+//================================================================================
 
-void APowerEntity::SetTargetAndHandleCircle(APowerEntity * EntityToTarget)
-{
-    if (this->TargetEntity) {
-        this->TargetEntity->TargetCircle->SetVisibility(false);
-    }
+void APowerEntity::SetTargetAndHandleCircle(APowerEntity * EntityToTarget) {
+	if (this->TargetEntity) {
+		this->TargetEntity->TargetCircle->SetVisibility(false);
+	}
 
-    this->ChangeTarget(EntityToTarget);
+	this->ChangeTarget(EntityToTarget);
 
-    if (EntityToTarget) {
-        EntityToTarget->TargetCircle->SetVisibility(true);
-    }
+	if (EntityToTarget) {
+		EntityToTarget->TargetCircle->SetVisibility(true);
+	}
 	UpdateHUD();
 }
 
-void APowerEntity::ChangeTarget(APowerEntity* NewTarget)
-{
-    if (Role < ROLE_Authority) {
-        ServerChangeTarget(NewTarget);
-    }
+void APowerEntity::ChangeTarget(APowerEntity* NewTarget) {
+	if (Role < ROLE_Authority) {
+		ServerChangeTarget(NewTarget);
+	}
 
-    this->TargetEntity = NewTarget;
+	this->TargetEntity = NewTarget;
 }
 
-void APowerEntity::ServerChangeTarget_Implementation(APowerEntity* NewTarget)
-{
-    ChangeTarget(NewTarget);
+void APowerEntity::ServerChangeTarget_Implementation(APowerEntity* NewTarget) {
+	ChangeTarget(NewTarget);
 }
 
-bool APowerEntity::ServerChangeTarget_Validate(APowerEntity* NewTarget)
-{
-    return true;
+bool APowerEntity::ServerChangeTarget_Validate(APowerEntity* NewTarget) {
+	return true;
 }
 
+//================================================================================
+// Ability Stuff
+//================================================================================
 
-void APowerEntity::CastAbilityOnTarget(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag) {
-    if (TargetEntity == nullptr) {
-        return;
-    }
-    
-    if (Role < ROLE_Authority) {
-        ServerCastAbilityOnTarget(AbilityToCast, EventTag);
-    }
-        
-    AbilitySystem->TryActivateAbilityByClass(AbilityToCast);
-    FGameplayEventData Payload;
-    Payload.Target = TargetEntity;
-    AbilitySystem->HandleGameplayEvent(EventTag, &Payload);
-}
-
-void APowerEntity::ServerCastAbilityOnTarget_Implementation(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag)
-{
-    CastAbilityOnTarget(AbilityToCast, EventTag);
-}
-
-bool APowerEntity::ServerCastAbilityOnTarget_Validate(TSubclassOf<UGameplayAbility> AbilityToCast, FGameplayTag EventTag)
-{
-    return true;
-}
+//================================================================================
+// UMG Stuff
+//================================================================================
