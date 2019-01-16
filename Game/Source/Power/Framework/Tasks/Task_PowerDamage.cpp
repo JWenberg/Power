@@ -94,13 +94,14 @@ void UTask_PowerDamage::OnTaskStart(const TWeakObjectPtr<const UAblAbilityContex
 				//DamageTargets[i]->TakeDamage(DamageValues[i], EmptyEvent, nullptr, DamageSource);
                 APowerEntity* EntityToDamage = Cast<APowerEntity>(DamageTargets[i]);
                 EntityToDamage->ReduceHealth(DamageValues[i]);
+				EntityToDamage->NameplateController->UpdateNameplate();
 			}
 		}
 	}
 }
 
 void UTask_PowerDamage::OnTaskEnd(const TWeakObjectPtr<const UAblAbilityContext>& Context, const EAblAbilityTaskResult result) const {
-	APowerEntity* Power_DamageDealer = (APowerEntity*)((APawn*)(Context->GetInstigator()));
+	APowerEntity* Power_DamageDealer = (APowerEntity*)((APawn*)(Context->GetOwner()));
 	Power_DamageDealer->UpdateHUD();
 }
 
