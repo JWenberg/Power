@@ -50,7 +50,6 @@ APowerEntity::APowerEntity() {
 // Called when the game starts or when spawned
 void APowerEntity::BeginPlay() {
 	Super::BeginPlay();
-	UpdateHUD();
 }
 
 //Replication for non-AttributeSet Attributes
@@ -107,7 +106,6 @@ void APowerEntity::SetTargetAndHandleCircle(APowerEntity * EntityToTarget) {
 	if (EntityToTarget) {
 		EntityToTarget->TargetCircle->SetVisibility(true);
 	}
-	UpdateHUD();
 }
 
 void APowerEntity::ChangeTarget(APowerEntity* NewTarget) {
