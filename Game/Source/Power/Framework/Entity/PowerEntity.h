@@ -70,6 +70,13 @@ public:
     virtual void ServerChangeTarget_Implementation(APowerEntity* NewTarget);
     virtual bool ServerChangeTarget_Validate(APowerEntity* NewTarget);
 
+	/* Skillshot Targeting */ 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skillshots", Replicated)
+	FVector skillshot_location;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skillshots", Replicated)
+	FName skillshot_name;
+
 	/* Component References */
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UDecalComponent* TargetCircle;
