@@ -1,0 +1,48 @@
+{
+	"FileVersion": 3,
+	"Version": 2,
+	"VersionName": "1.1",
+	"FriendlyName": "Attributes Extension",
+	"Description": "A lightweight attributes system for Unreal Engine 4",
+	"Category": "Piperift",
+	"CreatedBy": "PipeRift",
+	"CreatedByURL": "http://piperift.com/",
+	"DocsURL": "https://piperift.com/AttributesExtension/",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/1f0ba37099a14e228a1ce5e4891ed70a",
+	"SupportURL": "info@piperift.com",
+	"EngineVersion": "4.20.0",
+	"CanContainContent": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "Attributes",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32",
+				"Linux",
+				"HTML5",
+				"Android",
+				"PS4",
+				"XboxOne",
+				"Switch"
+			]
+		},
+		{
+			"Name": "AttributesEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"WhitelistPlatforms": [
+				"Win64",
+				"Win32",
+				"Linux",
+				"HTML5",
+				"Android",
+				"PS4",
+				"XboxOne",
+				"Switch"
+			]
+		}
+	]
+}
