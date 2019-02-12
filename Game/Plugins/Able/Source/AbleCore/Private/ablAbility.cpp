@@ -229,7 +229,7 @@ void UAblAbility::BuildDependencyList()
 
 	for (const UAblAbilityTask* Task : m_Tasks)
 	{
-		if (Task->HasDependencies())
+		if (Task && Task->HasDependencies())
 		{
 			for (const UAblAbilityTask* TaskDependency : Task->GetTaskDependencies())
 			{

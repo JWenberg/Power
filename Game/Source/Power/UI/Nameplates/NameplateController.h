@@ -23,17 +23,4 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateNameplate();
 	
-	//UFUNCTION(BlueprintImplementableEvent, Category = "From Cpp")
-	//void UpdateNameText();
-
-	/*
-	UFUNCTION(BlueprintCallable, Category = "From Cpp")
-	void UpdateLevelText(int NewLevel);
-
-	UFUNCTION(BlueprintCallable, Category = "From Cpp")
-	void UpdateHealthBar(int CurrentHealth, int MaxHealth);
-
-	UPROPERTY()
-	UNameplateWidget* NameplateBlueprint;
-	*/
 };

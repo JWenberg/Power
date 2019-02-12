@@ -23,7 +23,8 @@ APowerEntity::APowerEntity() {
 	//Nameplate Component Initialization
 	static ConstructorHelpers::FClassFinder<UNameplateController> NameplateReference(TEXT("/Game/Power/UI/NamePlates/BP_NameplateController"));
 	if (NameplateReference.Succeeded()) {
-		this->NameplateController = static_cast<UNameplateController*>(CreateDefaultSubobject(TEXT("NameplateController"), UNameplateController::StaticClass(), NameplateReference.Class.Get(), true, false, false));
+		FName component_unique_name = FName(*GetNameSafe(this).Append("_N_Controller"));
+		this->NameplateController = (UNameplateController*)(CreateDefaultSubobject(component_unique_name ,UNameplateController::StaticClass(), NameplateReference.Class.Get(), true, false, false));
 		this->NameplateController->SetupAttachment(RootComponent);
 		this->NameplateController->SetRelativeLocation(FVector(0, 0, 120));
 		this->NameplateController->UpdateNameplate();

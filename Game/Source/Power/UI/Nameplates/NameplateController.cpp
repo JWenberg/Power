@@ -12,15 +12,4 @@ UNameplateController::UNameplateController() {
 		this->SetWidgetClass(Nameplate.Class);
 	}
 	this->bEditableWhenInherited = true;
-	//NameplateBlueprint = Cast<UNameplateWidget>(UNameplateController::GetUserWidgetObject());
 }
-
-/*
-void UNameplateController::UpdateLevelText(int NewLevel) {
-	NameplateBlueprint->UpdateLevel(NewLevel);
-}
-
-void UNameplateController::UpdateHealthBar(int CurrentHealth, int MaxHealth) {
-	NameplateBlueprint->UpdateHealthBar(CurrentHealth, MaxHealth);
-}
-*/
