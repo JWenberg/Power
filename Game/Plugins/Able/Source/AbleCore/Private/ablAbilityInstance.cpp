@@ -49,9 +49,9 @@ void UAblAbilityInstance::Initialize(UAblAbilityContext& AbilityContext)
 
 	// Sort our Tasks into Sync/Async queues.
 	const TArray<UAblAbilityTask*> & Tasks = m_Ability->GetTasks();
-	for (UAblAbilityTask* Task : Tasks)
+	for (UAblAbilityTask* Task : Tasks) 
 	{
-		if (Task->IsValidForNetMode(NetMode))
+		if (Task && Task->IsValidForNetMode(NetMode)) 
 		{
 			if (Task->IsAsyncFriendly())
 			{
