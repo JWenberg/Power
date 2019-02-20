@@ -21,10 +21,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "SpatialGDKEditorToolbar",
-			"Enabled": true
-		},
-		{
 			"Name": "GameplayAbilities",
 			"Enabled": true
 		},

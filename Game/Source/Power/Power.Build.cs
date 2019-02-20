@@ -8,6 +8,22 @@ public class Power : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "GameplayTags", "GameplayTasks", "Core", "CoreUObject", "Engine", "InputCore", "SpatialGDK", "UMG", "Slate", "SlateCore", "Able", "AbleCore", "HeadMountedDisplay"});
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"GameplayAbilities", 
+			"GameplayTags", 
+			"GameplayTasks", 
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore", 
+			"SpatialGDK", 
+			"UMG", 
+			"Slate", 
+			"SlateCore", 
+			"Able", 
+			"AbleCore", 
+			"HeadMountedDisplay", 
+			"Attributes"
+		});
 	}
 }

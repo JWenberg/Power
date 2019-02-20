@@ -32,7 +32,7 @@
     "streaming_query": [
       {
         "global_component_streaming_query": {
-          "component_name": "unreal.GlobalStateManager"
+          "component_name": "unreal.SingletonManager"
         }
       },
       {
@@ -83,7 +83,7 @@
       "command": "StartWorker.sh",
       "arguments": [
         "${IMPROBABLE_WORKER_ID}",
-        "StarterProject",
+        "${IMPROBABLE_LOG_FILE}",
         "ThirdPersonExampleMap",
         "+appName",
         "${IMPROBABLE_PROJECT_NAME}",
@@ -97,7 +97,6 @@
         "${IMPROBABLE_WORKER_ID}",
         "+linkProtocol",
         "RakNet",
-        "-abslog=${IMPROBABLE_LOG_FILE}",
         "-NoVerifyGC"
       ]
     }

@@ -2,8 +2,6 @@
 
 #include "PowerEntity.h"
 #include "UnrealNetwork.h"
-#include "PowerEntityAttributeSet.h"
-#include "PowerEntityStats.h"
 #include "Classes/Components/DecalComponent.h"
 
 
@@ -11,9 +9,6 @@
 APowerEntity::APowerEntity() {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	//AttributeSet Initialization
-	this->AttributeSet = CreateDefaultSubobject<UPowerEntityAttributeSet>(TEXT("PowerEntityAttributeSet"));
 
 	//Default Values for non-AttributeSet Attributes
 	this->Level = 1;
@@ -42,6 +37,10 @@ APowerEntity::APowerEntity() {
 		this->TargetCircle->SetMaterial(0, DecalMaterial.Object);
 	}
 
+	//Set Attribute Base Stats
+	entity_health.SetBaseValue(100);
+	entity_mana.SetBaseValue(1000);
+
 }
 
 //================================================================================
@@ -66,31 +65,33 @@ void APowerEntity::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 // Attribute Stuff
 //================================================================================
 
-int APowerEntity::GetHealth() {
-	return AttributeSet->Health.GetCurrentValue();
+
+//Damage Methods
+void APowerEntity::PowerTakeDamage(float damage) {
+	//TODO: Faction check damage dealer
+	if (Role < ROLE_Authority) {
+		ServerPowerTakeDamage(damage);
+	}
+
+	entity_health = (entity_health.GetValue() - damage);
+
+	if (entity_health.GetValue() <= 0) {
+		entity_health = 0;
+		//TODO: die
+	}
 }
 
-int APowerEntity::GetMaxHealth() {
-	return AttributeSet->MaxHealth.GetCurrentValue();
-}
-
-int APowerEntity::GetMana() {
-	return AttributeSet->Mana.GetCurrentValue();
-}
-
-int APowerEntity::GetMaxMana() {
-	return AttributeSet->MaxMana.GetCurrentValue();
-}
-
-void APowerEntity::ReduceHealth(float HealthToReduce) {
-	float newHealthValue = (float)GetHealth() - HealthToReduce;
+void APowerEntity::ServerPowerTakeDamage_Implementation(float damage) {
+	entity_health = (entity_health.GetValue() - damage);
 	
-	//Make sure health value never goes below 0
-	if (newHealthValue <= 0) {
-		newHealthValue = 0;
-		//Todo: Die
-	} 
-	AttributeSet->Health.SetCurrentValue(newHealthValue);
+	if (entity_health.GetValue() <= 0) {
+		entity_health = 0;
+		//TODO: die
+	}
+}
+
+bool APowerEntity::ServerPowerTakeDamage_Validate(float damage) {
+	return true;
 }
 
 //================================================================================

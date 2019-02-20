@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "FloatAttr.h"
 #include "UI/Nameplates/NameplateController.h"
 #include "PowerEntity.generated.h"
 
@@ -25,23 +26,20 @@ protected:
 public:	
 	
 	/* Attribute Stuff */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-    class UPowerEntityAttributeSet* AttributeSet;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Attributes", Replicated)
+	FFloatAttr entity_health;
 
-    UFUNCTION(BlueprintCallable)
-    int GetHealth();
-
-    UFUNCTION(BlueprintCallable)
-    int GetMaxHealth();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player Attributes", Replicated)
+	FFloatAttr entity_mana;
 
 	UFUNCTION(BlueprintCallable)
-	int GetMana();
+	void PowerTakeDamage(float damage);
 
-	UFUNCTION(BlueprintCallable)
-	int GetMaxMana();
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerPowerTakeDamage(float damage);
 
-	UFUNCTION(BlueprintCallable)
-	void ReduceHealth(float HealthToReduce);
+	virtual void ServerPowerTakeDamage_Implementation(float damage);
+	virtual bool ServerPowerTakeDamage_Validate(float damage);
 
     /* Non-AttributeSet Attributes */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Entity stats", Replicated)

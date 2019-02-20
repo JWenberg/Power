@@ -93,8 +93,7 @@ void UTask_PowerDamage::OnTaskStart(const TWeakObjectPtr<const UAblAbilityContex
 #endif
 				//DamageTargets[i]->TakeDamage(DamageValues[i], EmptyEvent, nullptr, DamageSource);
                 APowerEntity* EntityToDamage = Cast<APowerEntity>(DamageTargets[i]);
-                EntityToDamage->ReduceHealth(DamageValues[i]);
-				EntityToDamage->NameplateController->UpdateNameplate();
+                EntityToDamage->PowerTakeDamage(DamageValues[i]);
 			}
 		}
 	}
